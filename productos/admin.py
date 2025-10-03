@@ -32,6 +32,7 @@ class ConfiguracionSitioForm(forms.ModelForm):
             'color_fondo': ColorPickerWidget(),
             'color_banner': ColorPickerWidget(),
             'color_cards': ColorPickerWidget(),
+            'color_hover': ColorPickerWidget(),
         }
 
 @admin.register(ConfiguracionSitio)
@@ -44,7 +45,7 @@ class ConfiguracionSitioAdmin(admin.ModelAdmin):
             'fields': ('mensaje_envio', 'activo')
         }),
         ('Colores del Sitio', {
-            'fields': (('color_primario', 'color_secundario'), ('color_fondo', 'color_banner'), 'color_cards'),
+            'fields': (('color_primario', 'color_secundario'), ('color_fondo', 'color_banner'), ('color_cards', 'color_hover')),
             'description': 'Haz clic en los cuadros de color para abrir el selector de colores. Los cambios se aplicarán inmediatamente en el sitio.'
         }),
     )

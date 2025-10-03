@@ -15,6 +15,7 @@
             --color-fondo: {{ config.color_fondo|default:'#f8f9fa' }};
             --color-banner: {{ config.color_banner|default:'#28a745' }};
             --color-cards: {{ config.color_cards|default:'#ffffff' }};
+            --color-hover: {{ config.color_hover|default:'#F4C2C2' }};
         }
         
         body {
@@ -42,13 +43,12 @@
             color: var(--color-secundario);
             text-decoration: none;
             padding: 0.5rem 1rem;
-            border-radius: 20px;
             transition: all 0.2s;
             margin: 0 0.25rem;
         }
         
         .category-link:hover {
-            background-color: #e9ecef;
+            background-color: var(--color-hover);
             color: var(--color-primario);
         }
         
@@ -150,7 +150,7 @@
 
     <nav class="nav-categories">
         <div class="container">
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap justify-content-center">
                 <a href="{% url 'home' %}" class="category-link">Todos</a>
                 {% block categories %}{% endblock %}
             </div>
