@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mundo Magie{% endblock %}</title>
-    <link rel="icon" type="image/png" href="/static/images/icon-nav.ico">
+    <link rel="icon" type="image/png" href="/static/images/mariposas.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --color-primario: {{ config.color_primario|default:'#495057' }};
@@ -94,6 +95,34 @@
             font-size: 14px;
             text-align: center;
         }
+        
+        .banners-fidelizacion {
+            padding: 20px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .banner-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .banner-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .banner-item i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .banner-item h6 {
+            margin: 0;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -160,6 +189,67 @@
     <main class="container mt-4">
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="footer mt-5" style="background-color: {{ footer_config.color_fondo|default:'#2c3e50' }}; color: {{ footer_config.color_texto|default:'#ecf0f1' }}; border-top: 1px solid #dee2e6; font-family: 'Montserrat', sans-serif; font-size: 12px; text-transform: none;">
+        <div class="container py-5">
+            <div class="row">
+                {% if sobre_mi %}
+                <div class="col-md-3 mb-4">
+                    <h5>{{ sobre_mi.titulo }}</h5>
+                    <p class="small">{{ sobre_mi.contenido|truncatewords:20 }}</p>
+                </div>
+                {% endif %}
+                
+                {% if contacto %}
+                <div class="col-md-3 mb-4">
+                    <h5>{{ contacto.titulo }}</h5>
+                    {% if contacto.telefono %}<p class="small mb-1"><i class="fas fa-phone me-2"></i>{{ contacto.telefono }}</p>{% endif %}
+                    {% if contacto.email %}<p class="small mb-1"><i class="fas fa-envelope me-2"></i>{{ contacto.email }}</p>{% endif %}
+                    {% if contacto.direccion %}<p class="small mb-1"><i class="fas fa-map-marker-alt me-2"></i>{{ contacto.direccion }}</p>{% endif %}
+                    {% if contacto.horarios %}<p class="small"><i class="fas fa-clock me-2"></i>{{ contacto.horarios }}</p>{% endif %}
+                </div>
+                {% endif %}
+                
+                {% if informacion %}
+                <div class="col-md-3 mb-4">
+                    <h5>Información</h5>
+                    {% for info in informacion %}
+                    <p class="small mb-1"><a href="#" style="color: {{ footer_config.color_enlaces|default:'#3498db' }}; text-decoration: none;">{{ info.titulo }}</a></p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                {% if suscripcion %}
+                <div class="col-md-3 mb-4">
+                    <h5>{{ suscripcion.titulo }}</h5>
+                    <p class="small mb-3">{{ suscripcion.descripcion }}</p>
+                    <div class="input-group input-group-sm">
+                        <input type="email" class="form-control" placeholder="Tu email">
+                        <button class="btn btn-primary" type="button">Suscribir</button>
+                    </div>
+                    {% if redes_sociales %}
+                    <div class="mt-3">
+                        <h6>Síguenos</h6>
+                        {% for red in redes_sociales %}
+                        <a href="{{ red.url }}" target="_blank" class="me-3" style="color: {{ footer_config.color_redes|default:'#e74c3c' }}; font-size: 1.2rem;">
+                            <i class="{{ red.icono }}"></i>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <hr style="border-top: 1px solid #dee2e6; border-bottom: none; border-left: none; border-right: none; margin: 2rem 0 1rem 0;">
+            
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="small mb-0">&copy; {% now "Y" %} Mundo Magie. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>

@@ -4,18 +4,20 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Producto, Categoria, Pedido, Slide, ConfiguracionSitio
+from .models import Producto, Categoria, Pedido, Slide, ConfiguracionSitio, BannerFidelizacion, FooterConfig, SobreMi, Contacto, Informacion, Suscripcion, RedSocial
 
 def home(request):
     productos = Producto.objects.filter(activo=True)[:8]
     categorias = Categoria.objects.all()
     slides = Slide.objects.filter(activo=True)[:6]
     config = ConfiguracionSitio.objects.filter(activo=True).first()
+    banners = BannerFidelizacion.objects.filter(activo=True)
     return render(request, 'home.html', {
         'productos': productos,
         'categorias': categorias,
         'slides': slides,
-        'config': config
+        'config': config,
+        'banners': banners
     })
 
 def productos_por_categoria(request, categoria_id):
@@ -23,11 +25,13 @@ def productos_por_categoria(request, categoria_id):
     productos = Producto.objects.filter(categoria=categoria, activo=True)
     categorias = Categoria.objects.all()
     config = ConfiguracionSitio.objects.filter(activo=True).first()
+    banners = BannerFidelizacion.objects.filter(activo=True)
     return render(request, 'productos.html', {
         'productos': productos,
         'categoria': categoria,
         'categorias': categorias,
-        'config': config
+        'config': config,
+        'banners': banners
     })
 
 def detalle_producto(request, producto_id):
@@ -65,6 +69,7 @@ def buscar(request):
     productos = []
     categorias = Categoria.objects.all()
     config = ConfiguracionSitio.objects.filter(activo=True).first()
+    banners = BannerFidelizacion.objects.filter(activo=True)
     
     if query:
         productos = Producto.objects.filter(
@@ -76,5 +81,6 @@ def buscar(request):
         'productos': productos,
         'query': query,
         'categorias': categorias,
-        'config': config
+        'config': config,
+        'banners': banners
     })

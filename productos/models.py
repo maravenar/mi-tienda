@@ -85,3 +85,103 @@ class ConfiguracionSitio(models.Model):
     class Meta:
         verbose_name = "Configuración del Sitio"
         verbose_name_plural = "Configuración del Sitio"
+
+class BannerFidelizacion(models.Model):
+    titulo = models.CharField(max_length=100, help_text='Ej: Creados con amor')
+    descripcion = models.CharField(max_length=200, blank=True, help_text='Descripción breve del banner')
+    icono = models.CharField(max_length=50, default='fas fa-heart', help_text='Clase de Font Awesome (ej: fas fa-heart, fas fa-shipping-fast)')
+    color_icono = models.CharField(max_length=7, default='#495057', help_text='Color del ícono')
+    color_texto = models.CharField(max_length=7, default='#6c757d', help_text='Color del texto')
+    color_fondo = models.CharField(max_length=7, default='#ffffff', help_text='Color de fondo del banner')
+    orden = models.IntegerField(default=0, help_text='Orden de aparición')
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "Banner de Fidelización"
+        verbose_name_plural = "Banners de Fidelización"
+
+class FooterConfig(models.Model):
+    color_fondo = models.CharField(max_length=7, default='#2c3e50', help_text='Color de fondo del footer')
+    color_texto = models.CharField(max_length=7, default='#ecf0f1', help_text='Color del texto')
+    color_enlaces = models.CharField(max_length=7, default='#3498db', help_text='Color de los enlaces')
+    color_redes = models.CharField(max_length=7, default='#e74c3c', help_text='Color de los íconos de redes sociales')
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return "Configuración del Footer"
+    
+    class Meta:
+        verbose_name = "Configuración del Footer"
+        verbose_name_plural = "Configuración del Footer"
+
+class SobreMi(models.Model):
+    titulo = models.CharField(max_length=100, default='Sobre Mí')
+    contenido = models.TextField(help_text='Descripción sobre la tienda o propietario')
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        verbose_name = "Sobre Mí"
+        verbose_name_plural = "Sobre Mí"
+
+class Contacto(models.Model):
+    titulo = models.CharField(max_length=100, default='Contacto')
+    telefono = models.CharField(max_length=20, blank=True)
+    email = models.EmailField(blank=True)
+    direccion = models.TextField(blank=True)
+    horarios = models.TextField(blank=True, help_text='Horarios de atención')
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        verbose_name = "Contacto"
+        verbose_name_plural = "Contacto"
+
+class Informacion(models.Model):
+    titulo = models.CharField(max_length=100)
+    contenido = models.TextField()
+    orden = models.IntegerField(default=0)
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "Información"
+        verbose_name_plural = "Información"
+
+class Suscripcion(models.Model):
+    titulo = models.CharField(max_length=100, default='Suscríbete')
+    descripcion = models.TextField(default='Recibe nuestras ofertas y novedades')
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        verbose_name = "Suscripción"
+        verbose_name_plural = "Suscripción"
+
+class RedSocial(models.Model):
+    nombre = models.CharField(max_length=50)
+    icono = models.CharField(max_length=50, help_text='Clase de Font Awesome (ej: fab fa-facebook)')
+    url = models.URLField()
+    orden = models.IntegerField(default=0)
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.nombre
+    
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "Red Social"
+        verbose_name_plural = "Redes Sociales"
