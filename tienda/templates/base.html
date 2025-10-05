@@ -7,121 +7,34 @@
     <link rel="icon" type="image/png" href="/static/images/mariposas.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/static/css/styles.css" rel="stylesheet">
     <style>
         :root {
-            --color-primario: {{ config.color_primario|default:'#495057' }};
-            --color-secundario: {{ config.color_secundario|default:'#6c757d' }};
-            --color-fondo: {{ config.color_fondo|default:'#f8f9fa' }};
-            --color-banner: {{ config.color_banner|default:'#28a745' }};
+            --color-primario: {{ config.color_primario|default:'#ffc1ea' }};
+            --color-secundario: {{ config.color_secundario|default:'#d2a8dd' }};
+            --color-fondo: {{ config.color_fondo|default:'#fff' }};
+            --color-banner: {{ config.color_banner|default:'#95d4e8' }};
             --color-cards: {{ config.color_cards|default:'#ffffff' }};
-            --color-hover: {{ config.color_hover|default:'#F4C2C2' }};
+            --color-hover: {{ config.color_hover|default:'#f4d875' }};
         }
-        
-        body {
-            background-color: var(--color-fondo);
-            font-family: 'Poppins', sans-serif;
-            font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 14px;
+        .footer {
+            background-color: {{ footer_config.color_fondo|default:'#2c3e50' }};
+            color: {{ footer_config.color_texto|default:'#ecf0f1' }};
+            border-top: 1px solid #dee2e6;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            text-transform: none;
         }
-        
-        .header {
-            background: var(--color-cards);
-            border-bottom: 1px solid #dee2e6;
-            padding: 1rem 0;
-        }
-        
-        .nav-categories {
-            background: var(--color-cards);
-            border-bottom: 1px solid #dee2e6;
-            padding: 0.5rem 0;
-        }
-        
-        .category-link {
-            color: var(--color-secundario);
+        .footer-link {
+            color: {{ footer_config.color_enlaces|default:'#3498db' }};
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            transition: all 0.2s;
-            margin: 0 0.25rem;
         }
-        
-        .category-link:hover {
-            background-color: var(--color-hover);
-            color: var(--color-primario);
-        }
-        
-        .product-card {
-            background: var(--color-cards);
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            transition: box-shadow 0.2s;
-        }
-        
-        .product-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .btn-primary {
-            background-color: var(--color-primario);
-            border-color: var(--color-primario);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--color-primario);
-            border-color: var(--color-primario);
-            opacity: 0.9;
-        }
-        
-        .text-primary {
-            color: var(--color-primario) !important;
-        }
-        
-        .form-control {
-            border-radius: 8px;
-        }
-        
-        .card {
-            border-radius: 12px;
-            background: var(--color-cards);
-        }
-        
-        .banner-envio {
-            background: var(--color-banner);
-            color: white;
-            padding: 8px 0;
-            font-size: 14px;
-            text-align: center;
-        }
-        
-        .banners-fidelizacion {
-            padding: 20px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .banner-item {
-            text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 5px;
-            transition: transform 0.2s;
-        }
-        
-        .banner-item:hover {
-            transform: translateY(-2px);
-        }
-        
-        .banner-item i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-        
-        .banner-item h6 {
-            margin: 0;
-            font-weight: 500;
+        .social-link {
+            color: {{ footer_config.color_redes|default:'#e74c3c' }};
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -144,13 +57,14 @@
                 
                 <div class="text-center">
                     <a href="{% url 'home' %}">
-                        <img src="/static/images/logo.png" alt="Logo" style="width: 100px; height: 100px; cursor: pointer;" onerror="this.style.display='none'">
+                        <img src="/static/images/logo.png" alt="Logo" style="width: 300px; height: 300px; cursor: pointer;" onerror="this.style.display='none'">
                     </a>
                 </div>
                 
                 <div class="d-flex align-items-center">
-                    <a href="{% url 'carrito' %}" class="me-3" style="font-size: 1.2rem; text-decoration: none; color: #D8A7CA;">
+                    <a href="{% url 'carrito' %}" class="me-3 position-relative" style="font-size: 1.2rem; text-decoration: none; color: #D8A7CA;">
                         <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #ffc1ea; color: white; font-size: 10px; display: none;">0</span>
                     </a>
                     {% if user.is_authenticated %}
                         <a href="{% url 'perfil' %}" class="me-3" style="font-size: 1.2rem; text-decoration: none; color: #D8A7CA;">
@@ -190,7 +104,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer mt-5" style="background-color: {{ footer_config.color_fondo|default:'#2c3e50' }}; color: {{ footer_config.color_texto|default:'#ecf0f1' }}; border-top: 1px solid #dee2e6; font-family: 'Montserrat', sans-serif; font-size: 12px; text-transform: none;">
+    <footer class="footer mt-5">
         <div class="container py-5">
             <div class="row">
                 {% if sobre_mi %}
@@ -214,7 +128,7 @@
                 <div class="col-md-3 mb-4">
                     <h5>Información</h5>
                     {% for info in informacion %}
-                    <p class="small mb-1"><a href="#" style="color: {{ footer_config.color_enlaces|default:'#3498db' }}; text-decoration: none;">{{ info.titulo }}</a></p>
+                    <p class="small mb-1"><a href="#" class="footer-link">{{ info.titulo }}</a></p>
                     {% endfor %}
                 </div>
                 {% endif %}
@@ -231,7 +145,7 @@
                     <div class="mt-3">
                         <h6>Síguenos</h6>
                         {% for red in redes_sociales %}
-                        <a href="{{ red.url }}" target="_blank" class="me-3" style="color: {{ footer_config.color_redes|default:'#e74c3c' }}; font-size: 1.2rem;">
+                        <a href="{{ red.url }}" target="_blank" class="me-3 social-link">
                             <i class="{{ red.icono }}"></i>
                         </a>
                         {% endfor %}
@@ -255,16 +169,60 @@
     <script>
         let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
         
-        function agregarAlCarrito(id, nombre, precio) {
+        let cantidades = {};
+        
+        function actualizarContadorCarrito() {
+            const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
+            const contador = document.getElementById('cart-count');
+            if (totalItems > 0) {
+                contador.textContent = totalItems;
+                contador.style.display = 'inline-block';
+            } else {
+                contador.style.display = 'none';
+            }
+        }
+        
+        function cambiarCantidad(id, cambio) {
+            if (!cantidades[id]) cantidades[id] = 1;
+            cantidades[id] += cambio;
+            if (cantidades[id] < 1) cantidades[id] = 1;
+            document.getElementById('qty-' + id).textContent = cantidades[id];
+        }
+        
+        function agregarAlCarritoConCantidad(id, nombre, precio) {
+            const cantidad = cantidades[id] || 1;
             const item = carrito.find(p => p.id === id);
             if (item) {
-                item.cantidad++;
+                item.cantidad += cantidad;
             } else {
-                carrito.push({id, nombre, precio, cantidad: 1});
+                carrito.push({id, nombre, precio, cantidad});
             }
             localStorage.setItem('carrito', JSON.stringify(carrito));
-            alert('Producto agregado al carrito');
+            actualizarContadorCarrito();
+            
+            Swal.fire({
+                title: '¡Agregado!',
+                text: `${cantidad} producto(s) agregado(s) al carrito`,
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+                background: '#fff',
+                color: '#333',
+                iconColor: '#ffc1ea'
+            });
+            
+            cantidades[id] = 1;
+            document.getElementById('qty-' + id).textContent = 1;
         }
+        
+        function agregarAlCarrito(id, nombre, precio) {
+            agregarAlCarritoConCantidad(id, nombre, precio);
+        }
+        
+        // Actualizar contador al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarContadorCarrito();
+        });
     </script>
 </body>
 </html>

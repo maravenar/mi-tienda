@@ -4,20 +4,36 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Producto, Categoria, Pedido, Slide, ConfiguracionSitio, BannerFidelizacion, FooterConfig, SobreMi, Contacto, Informacion, Suscripcion, RedSocial
+from .models import Producto, Categoria, Pedido, Slide, ConfiguracionSitio, SeccionCategoria, BannerFidelizacion, FooterConfig, SobreMi, Contacto, Informacion, Suscripcion, RedSocial
 
 def home(request):
-    productos = Producto.objects.filter(activo=True)[:8]
+    productos = Producto.objects.filter(activo=True).order_by('-fecha_creacion')[:8]
     categorias = Categoria.objects.all()
     slides = Slide.objects.filter(activo=True)[:6]
     config = ConfiguracionSitio.objects.filter(activo=True).first()
     banners = BannerFidelizacion.objects.filter(activo=True)
+    
+    # Secciones de categorías
+    secciones_categorias = SeccionCategoria.objects.filter(activo=True)[:3]
+    secciones_con_productos = []
+    
+    for seccion in secciones_categorias:
+        productos_seccion = Producto.objects.filter(
+            categoria=seccion.categoria, 
+            activo=True
+        )[:12]  # 12 productos (6x2 filas)
+        secciones_con_productos.append({
+            'seccion': seccion,
+            'productos': productos_seccion
+        })
+    
     return render(request, 'home.html', {
         'productos': productos,
         'categorias': categorias,
         'slides': slides,
         'config': config,
-        'banners': banners
+        'banners': banners,
+        'secciones_categorias': secciones_con_productos
     })
 
 def productos_por_categoria(request, categoria_id):
@@ -84,3 +100,7 @@ def buscar(request):
         'config': config,
         'banners': banners
     })
+
+def checkout(request):
+    config = ConfiguracionSitio.objects.filter(activo=True).first()
+    return render(request, 'checkout.html', {'config': config})

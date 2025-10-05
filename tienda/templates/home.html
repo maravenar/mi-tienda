@@ -69,30 +69,78 @@
 </section>
 {% endif %}
 
-<div class="row g-3">
-    {% for producto in productos %}
-    <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card product-card h-100">
-            {% if producto.imagen %}
-            <a href="{% url 'detalle_producto' producto.id %}">
-                <img src="{{ producto.imagen.url }}" class="card-img-top" style="height: 200px; object-fit: cover; cursor: pointer;">
-            </a>
-            {% endif %}
-            <div class="card-body d-flex flex-column">
-                <a href="{% url 'detalle_producto' producto.id %}" class="text-decoration-none text-dark">
-                    <h6 class="card-title">{{ producto.nombre }}</h6>
-                </a>
-                <p class="h5 text-primary mb-3">${{ producto.precio|floatformat:0 }}</p>
-                <button class="btn btn-primary btn-sm mt-auto" onclick="agregarAlCarrito({{ producto.id }}, '{{ producto.nombre }}', {{ producto.precio }})">
-                    Agregar al Carrito
-                </button>
+<div class="mb-5">
+    <h4 class="mb-4">RECIÉN LLEGADOS</h4>
+    <div class="row g-3">
+        {% for producto in productos %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="card product-card h-100">
+                <div class="product-image">
+                    {% if producto.imagen %}
+                    <a href="{% url 'detalle_producto' producto.id %}">
+                        <img src="{{ producto.imagen.url }}" style="cursor: pointer;">
+                    </a>
+                    {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-light h-100">
+                        <i class="fas fa-image fa-2x text-muted"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'detalle_producto' producto.id %}" class="text-decoration-none text-dark">
+                        <h6 class="card-title mb-2">{{ producto.nombre }}</h6>
+                    </a>
+                    <p class="h5 text-primary mb-3">${{ producto.precio|floatformat:0 }}</p>
+                    <div class="quantity-controls justify-content-center">
+                        <div class="quantity-btn" onclick="cambiarCantidad({{ producto.id }}, -1)">-</div>
+                        <span id="qty-{{ producto.id }}">1</span>
+                        <div class="quantity-btn" onclick="cambiarCantidad({{ producto.id }}, 1)">+</div>
+                        <button class="cart-btn" onclick="agregarAlCarritoConCantidad({{ producto.id }}, '{{ producto.nombre }}', {{ producto.precio }})">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No hay productos disponibles</p>
+        </div>
+        {% endfor %}
     </div>
-    {% empty %}
-    <div class="col-12 text-center py-5">
-        <p class="text-muted">No hay productos disponibles</p>
-    </div>
-    {% endfor %}
 </div>
+
+{% for seccion_data in secciones_categorias %}
+<div class="mb-5">
+    <h4 class="mb-4">{{ seccion_data.seccion.categoria.nombre|upper }}</h4>
+    <div class="row g-3">
+        {% for producto in seccion_data.productos %}
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+            <div class="card product-card h-100">
+                <div class="product-image">
+                    {% if producto.imagen %}
+                    <a href="{% url 'detalle_producto' producto.id %}">
+                        <img src="{{ producto.imagen.url }}" style="cursor: pointer;">
+                    </a>
+                    {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-light h-100">
+                        <i class="fas fa-image fa-2x text-muted"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex flex-column p-2">
+                    <a href="{% url 'detalle_producto' producto.id %}" class="text-decoration-none text-dark">
+                        <h6 class="card-title small">{{ producto.nombre }}</h6>
+                    </a>
+                    <p class="h6 text-primary mb-2">${{ producto.precio|floatformat:0 }}</p>
+                    <button class="btn btn-primary btn-sm mt-auto" onclick="agregarAlCarrito({{ producto.id }}, '{{ producto.nombre }}', {{ producto.precio }})">
+                        Agregar
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
 {% endblock %}

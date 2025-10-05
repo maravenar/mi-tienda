@@ -13,4 +13,5 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
     path('pedido/<int:pedido_id>/', views.detalle_pedido, name='detalle_pedido'),
     path('buscar/', views.buscar, name='buscar'),
+    path('checkout/', views.checkout, name='checkout'),
 ]

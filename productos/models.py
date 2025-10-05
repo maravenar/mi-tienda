@@ -86,6 +86,19 @@ class ConfiguracionSitio(models.Model):
         verbose_name = "Configuración del Sitio"
         verbose_name_plural = "Configuración del Sitio"
 
+class SeccionCategoria(models.Model):
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    orden = models.IntegerField(default=1, help_text='Orden de aparición (1, 2, 3)')
+    activo = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"Sección {self.orden} - {self.categoria.nombre}"
+    
+    class Meta:
+        ordering = ['orden']
+        verbose_name = "Sección de Categoría"
+        verbose_name_plural = "Secciones de Categorías"
+
 class BannerFidelizacion(models.Model):
     titulo = models.CharField(max_length=100, help_text='Ej: Creados con amor')
     descripcion = models.CharField(max_length=200, blank=True, help_text='Descripción breve del banner')
