@@ -37,6 +37,17 @@ div {
     padding: 1rem 0;
 }
 
+.logo {
+    width: 300px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
 .nav-categories {
     background: var(--color-cards);
     border-bottom: 1px solid #dee2e6;
